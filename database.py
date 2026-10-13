@@ -1,5 +1,7 @@
 """
-SafeGuardAI - Database module
+Add SQLite module with event throttling and incident logging
+
+This is the Database module
 """
 
 import sqlite3
