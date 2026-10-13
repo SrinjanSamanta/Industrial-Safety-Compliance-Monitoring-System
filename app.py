@@ -1,6 +1,7 @@
 """
 Add Streamlit web dashboard for real-time monitoring and incident analytics
-SafeGuardAI - Streamlit Dashboard
+
+This shows the Streamlit Dashboard
 Run:  streamlit run app.py
 """
 
