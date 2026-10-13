@@ -1,5 +1,5 @@
 """
-SafeGuardAI -
+Add core vision engine with YOLOv8 inference, geofencing, and fall detection
 """
 
 import time
@@ -10,14 +10,14 @@ from ultralytics import YOLO
 
 from database import log_violation
 
-VIDEO_SOURCE = "sample4.mp4"  # None for webcam
+VIDEO_SOURCE = "sample.mp4"  # None for webcam
 PPE_MODEL_PATH = "ppe.pt"    # classes: 0=head, 1=helmet
 
 ZONE_REL = np.array([
     [0.19, 0.18],
     [0.20, 0.34],
     [0.33, 0.33],
-    [0.33, 0.18],   
+    [0.33, 0.18],           #example vertices for the restricted zone
 ], dtype=np.float32)
 
 FALL_RATIO_THRESH = 1.2
