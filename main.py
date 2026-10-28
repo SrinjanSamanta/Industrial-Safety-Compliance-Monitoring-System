@@ -1,5 +1,5 @@
 """
-Add core vision engine with YOLOv8 inference, geofencing, and fall detection
+SafeGuardAI -
 """
 
 import time
@@ -17,15 +17,15 @@ ZONE_REL = np.array([
     [0.19, 0.18],
     [0.20, 0.34],
     [0.33, 0.33],
-    [0.33, 0.18],           #example vertices for the restricted zone
-], dtype=np.float32)
+    [0.33, 0.18],   
+], dtype=np.float32) #example matrix
 
 FALL_RATIO_THRESH = 1.2
 FALL_CONFIRM_SECONDS = 5
 FALL_GRACE_SECONDS = 1
 LOG_COOLDOWN_SECONDS = 5
 PPE_CONF = 0.4
-
+PROC_W = 800
 RED, BLUE, MAGENTA, WHITE = (0, 0, 255), (255, 0, 0), (255, 0, 255), (255, 255, 255)
 ORANGE = (0, 165, 255)
 
@@ -80,16 +80,16 @@ def main():
     fps = cap.get(cv2.CAP_PROP_FPS)
     delay = int(1000 / fps) if fps and fps > 0 else 1
 
-    fw = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    fh = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fw = PROC_W
+    fh = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) * PROC_W / cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     zone = (ZONE_REL * [fw, fh]).astype(np.int32)
-
     fall_start = None
     last_fall_seen = 0
     alert_active = False
     last_logged = {}
     frame_i = 0
     helmets, heads = [], []
+    results = None
     print("Press 'q' to quit.")
     cv2.namedWindow("SafeGuardAI", cv2.WINDOW_NORMAL)
     cv2.resizeWindow("SafeGuardAI", 1000, 560)  # adjust to your screen
@@ -99,10 +99,11 @@ def main():
         if not ret:
             print("End of video stream.")
             break
-
+        frame = cv2.resize(frame, (fw, fh))
         # Inference on the clean frame
         frame_i += 1
-        results = model(frame, classes=[0], conf=0.4, imgsz=480, verbose=False)
+        if frame_i % 2 == 1:
+            results = model(frame, classes=[0], conf=0.4, imgsz=480, verbose=False)
         if frame_i % 3 == 0:
             ppe_res = ppe_model(frame, conf=PPE_CONF, imgsz=480, verbose=False)[0]
             helmets = centers_of(ppe_res, ppe_model.names, "helmet")
