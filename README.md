@@ -2,7 +2,7 @@
 
 Real-time computer vision system for industrial safety compliance. Uses YOLOv8 for person detection, foot-plane spatial geofencing for restricted machinery zones, aspect-ratio fall detection for man-down alerts, and an SQLite-backed Streamlit dashboard.mmand center.
 
-### Core Architectural Components
+### Architectural Components
 
 * **YOLOv8 Detection Engine**: Powered by Ultralytics YOLOv8, capable of running standard person detection or custom-trained weights (such as `ppe.pt`) to monitor worker presence and equipment compliance.
 * **Foot-Plane Spatial Geofencing**: Utilizes OpenCV polygon containment testing (`cv2.pointPolygonTest`) mapped specifically to worker foot coordinates. This design eliminates false positives caused by 2D camera perspective distortion, ensuring accurate boundary enforcement around restricted machinery zones.
