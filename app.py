@@ -1,8 +1,7 @@
 """
-Add Streamlit web dashboard for real-time monitoring and incident analytics
+Streamlit web dashboard for real-time monitoring and incident analytics
 
 This shows the Streamlit Dashboard
-Run:  streamlit run app.py
 """
 
 import sqlite3
